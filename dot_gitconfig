@@ -1,0 +1,9 @@
+[user]
+	email = me@platun0v.ru
+	name = Platun0v
+[init]
+	defaultBranch = master
+[core]
+	editor = vim
+[url "ssh://git@git.platun0v.ru"]
+	insteadOf = "https://git.platun0v.ru"
