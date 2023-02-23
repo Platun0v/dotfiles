@@ -1,0 +1,29 @@
+# pick up functions.d paths
+set -p fish_function_path (builtin realpath (status dirname)/..)/functions.d/*
+
+# ensure tmpdir is set
+set -q TMPDIR; or set -x TMPDIR /tmp
+
+# ensure xdg paths are set
+set -q XDG_CONFIG_HOME; or set -x XDG_CONFIG_HOME $HOME/.config
+set -q XDG_DATA_HOME; or set -x XDG_DATA_HOME $HOME/.local/share
+set -q XDG_BIN_HOME; or set -x XDG_BIN_HOME $HOME/.local/bin
+set -q XDG_CACHE_HOME; or set -x XDG_CACHE_HOME $HOME/.cache
+
+# use TMPDIR for XDG_RUNTIME_DIR on macos, and on linux as a fallback
+if not set -q XDG_RUNTIME_DIR
+  set -x XDG_RUNTIME_DIR "/run/user/"(id -u)
+  if is_macos; or not mkdir -p -m 0700 "$XDG_RUNTIME_DIR" &>/dev/null
+    set -x XDG_RUNTIME_DIR $TMPDIR
+  end
+end
+
+{{- if eq .chezmoi.os "darwin" }}
+{{   $brew := or (lookPath "/opt/homebrew/bin/brew") (lookPath "/usr/local/bin/brew") }}
+# homebrew shellenv
+set -x HOMEBREW_PREFIX {{ quote (output $brew "--prefix" | trim) }}
+set -x HOMEBREW_CELLAR {{ quote (output $brew "--cellar" | trim) }}
+set -x HOMEBREW_REPOSITORY {{ quote (output $brew "--repo" | trim) }}
+# fall back to backported terminfo
+set -x TERMINFO_DIRS ":$XDG_DATA_HOME/terminfo"
+{{- end }}

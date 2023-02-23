@@ -1,0 +1,19 @@
+{{- if hasPrefix "linux-arch" .osid -}}
+#!/bin/sh -e
+
+if ! command -v yay >/dev/null; then
+  echo "Bootstrapping yay..."
+
+  YAY="${TMPDIR:-/tmp}/yay"
+  trap 'rm -rf $YAY' EXIT
+
+  git clone https://aur.archlinux.org/yay.git "$YAY"
+  (cd $YAY && makepkg -si --noconfirm)
+fi
+
+{{- $packages := .packages.arch.packages | sortAlpha | uniq -}}
+
+echo "Installing packages with yay..."
+yay -Sy --needed --noconfirm {{ join " " $packages }}
+
+{{- end -}}

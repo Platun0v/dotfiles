@@ -1,0 +1,28 @@
+{{/* os environment detection */}}
+{{- $osid := .chezmoi.os -}}
+{{- if .chezmoi.osRelease -}}
+{{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{/* Some machine dependant vars */}}
+{{- $email  := "me@mail.com" -}}{{/* Users mail, used in gitconfig */}}
+{{- $name := "username" -}}{{/* Name of user, used in gitconfig */}}
+
+{{- if hasKey . "configured" -}}
+{{-   $email  = .email -}}
+{{-   $name = .name -}}
+{{- else -}}
+{{-   if and (not $email) stdinIsATTY -}}
+{{-     $email := promptStringOnce . "email" "What is your email address" }}
+{{-   end -}}
+{{-   if and (not $name) stdinIsATTY -}}
+{{-     $name := promptStringOnce . "name" "What is your name address" }}
+{{-   end -}}
+{{- end -}}
+
+[data]
+    configured = true
+
+    osid       = {{ quote $osid }}
+    email      = {{ quote $email }}
+    name       = {{ quote $name }}

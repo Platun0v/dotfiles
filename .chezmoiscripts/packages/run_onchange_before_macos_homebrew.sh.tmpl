@@ -1,0 +1,9 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/sh -e
+
+echo "Installing packages from Brewfile..."
+brew bundle --file=/dev/stdin <<EOF
+{{ includeTemplate "private_dot_config/brew/Brewfile.tmpl" . }}
+EOF
+
+{{- end -}}
