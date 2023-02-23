@@ -14,8 +14,6 @@ end
 function setshell -a shell
   if is_macos
     sudo dscl . create "/Users/$username" UserShell $shell
-  else if is_freebsd
-    su root -c "pw usermod -n '$username' -s '$shell'"
   else
     sudo usermod -s $shell $username
   end

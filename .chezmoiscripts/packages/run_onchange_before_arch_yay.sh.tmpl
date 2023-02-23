@@ -11,7 +11,7 @@ if ! command -v yay >/dev/null; then
   (cd $YAY && makepkg -si --noconfirm)
 fi
 
-{{- $packages := .packages.arch.packages | sortAlpha | uniq -}}
+{{ $packages := .packages.arch.packages | sortAlpha | uniq }}
 
 echo "Installing packages with yay..."
 yay -Sy --needed --noconfirm {{ join " " $packages }}

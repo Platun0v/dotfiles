@@ -37,7 +37,6 @@
     ]
 
     casks = [
-        "bartender",
         "kitty",
     ]
 
