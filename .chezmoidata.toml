@@ -27,6 +27,10 @@
 
 
 [packages.macos]
+    taps = [
+        "homebrew/cask-fonts",
+    ]
+
     formulae = [
         # User Programs
         "chezmoi",
@@ -38,9 +42,8 @@
 
     casks = [
         "kitty",
+        "font-jetbrains-mono-nerd-font",
     ]
-
-    taps = []
 
     app_store = []
 
