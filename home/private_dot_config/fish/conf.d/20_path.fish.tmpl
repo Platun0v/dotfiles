@@ -26,8 +26,6 @@ if not set -q fish_path_hash; or test $fish_path_hash != {{ $hash }}
 
   # golang
   fish_add_path -m {$GOPATH,$GOROOT}/bin
-#   # nodejs
-#   fish_add_path -m $NODENV_ROOT/{shims,bin}
   # python
   fish_add_path -m $PYENV_ROOT/{shims,bin}
 #   # ruby

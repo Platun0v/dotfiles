@@ -26,6 +26,10 @@
     nord15dim = "#8c738c"
 
 
+[python]
+    supported = ["3.7", "3.8", "3.9", "3.10", "3.11"]
+
+
 [packages.macos]
     taps = [
         "homebrew/cask-fonts",
