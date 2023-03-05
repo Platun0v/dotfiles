@@ -39,6 +39,7 @@
         "git",
         "starship",
         "yq",
+        "pipx",
     ]
 
     casks = [
@@ -66,6 +67,7 @@
         "unzip",
         "zip",
         "go-yq",
+        "python-pipx",
 
         "kitty",
     ]

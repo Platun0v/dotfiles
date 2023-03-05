@@ -41,10 +41,10 @@ if not set -q fish_prefs_hash; or test $fish_prefs_hash != {{ $hash }}
 #   def -x NPM_CONFIG_USERCONFIG $XDG_CONFIG_HOME/npm/npmrc
 
   # python
-  def -x PYENV_ROOT $HOME/.pyenv
-#   def -x PIPX_HOME $XDG_DATA_HOME/pipx
+  def -x PYENV_ROOT $XDG_DATA_HOME/pyenv
+  def -x PIPX_HOME $XDG_DATA_HOME/pipx
 #   def -x PYLINTHOME $XDG_CACHE_HOME/pylint
-#   def -x PYTHONSTARTUP $XDG_CONFIG_HOME/python/startup.py
+  def -x PYTHONSTARTUP $XDG_CONFIG_HOME/python/startup.py
 
   # ruby
 #   def -x RBENV_ROOT $XDG_DATA_HOME/rbenv
