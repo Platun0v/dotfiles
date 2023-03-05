@@ -38,6 +38,7 @@
         "fish",
         "git",
         "starship",
+        "yq",
     ]
 
     casks = [
@@ -64,6 +65,7 @@
         "tailscale",
         "unzip",
         "zip",
+        "go-yq",
 
         "kitty",
     ]
