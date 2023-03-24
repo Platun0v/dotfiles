@@ -27,8 +27,11 @@
 
 
 [python]
-    supported = ["3.7", "3.8", "3.9", "3.10", "3.11"]
+    supported = ["3.9", "3.10", "3.11"]
+    pipx = ["pip-run",  "pip-tools", "poetry",  "shiv"]
 
+[rust]
+    wanted = ["gign"]
 
 [packages.macos]
     taps = [
@@ -44,12 +47,12 @@
         "starship",
         "yq",
         "pipx",
-        "vlc",
     ]
 
     casks = [
         "kitty",
         "font-jetbrains-mono-nerd-font",
+        "vlc",
     ]
 
     app_store = []

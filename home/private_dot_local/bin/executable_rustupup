@@ -33,14 +33,7 @@ end
 
 set installed (cargo install --list | string match -r '^\S+')
 
-set wanted \
-   gign
-
-# if is_linux
-#   set -a wanted \
-#      cargo-tarpaulin \
-#      cross
-# end
+set wanted $(chezmoi data | yq '.rust.wanted[]')
 
 for crate in $wanted
   if contains -- $crate $installed

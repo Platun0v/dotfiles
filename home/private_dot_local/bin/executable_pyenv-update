@@ -23,11 +23,7 @@ end
 
 set installed (pipx list --json | yq '.venvs[].metadata.main_package | [.package, .suffix] | join("")')
 
-set wanted \
-   pip-run \
-   pip-tools \
-   poetry \
-   shiv 
+set wanted $(chezmoi data | yq '.python.pipx[]')
 
 for spec in $wanted
   if contains -- $spec $installed
