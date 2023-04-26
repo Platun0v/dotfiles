@@ -208,4 +208,11 @@
 
         "kitty",
         "vlc",
+
+        "thunar",
+        "thunar-archive-plugin",
+        "thunar-media-tags-plugin",
+        "thunar-volman",
+        "gvfs",
+        "gvfs-mtp",
     ]
