@@ -4,6 +4,13 @@ set_color yellow
 echo "Updating pyenv..."
 set_color normal
 
+for plugin in (chezmoi data | jq -r '.python.pyenv | to_entries[] | [.key] | join(" ")') 
+  set repo $(chezmoi data | jq -r ".python.pyenv.$plugin")
+  if not test -d $PYENV_ROOT/plugins/$plugin
+    git clone $repo $PYENV_ROOT/plugins/$plugin
+  end
+end
+
 for repo in $PYENV_ROOT $PYENV_ROOT/plugins/*
   git -C $repo pull -q
 end

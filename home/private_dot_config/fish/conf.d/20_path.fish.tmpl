@@ -28,8 +28,6 @@ if not set -q fish_path_hash; or test $fish_path_hash != {{ $hash }}
   fish_add_path -m {$GOPATH,$GOROOT}/bin
   # python
   fish_add_path -m $PYENV_ROOT/{shims,bin}
-#   # ruby
-#   fish_add_path -m $RBENV_ROOT/{shims,bin}
   # rust
   fish_add_path -m $CARGO_HOME/bin
   # dotfiles/local

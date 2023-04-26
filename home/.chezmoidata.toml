@@ -30,6 +30,10 @@
     supported = ["3.9", "3.10", "3.11"]
     pipx = ["pip-run",  "pip-tools", "poetry",  "shiv"]
 
+[python.pyenv]
+    update = "https://github.com/pyenv/pyenv-update.git"
+    doctor = "https://github.com/pyenv/pyenv-doctor.git"
+
 [rust]
     wanted = ["gign"]
 
