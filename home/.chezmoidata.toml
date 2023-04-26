@@ -57,6 +57,8 @@
         "kitty",
         "font-jetbrains-mono-nerd-font",
         "vlc",
+        "activitywatch",
+        "hiddenbar",
     ]
 
     app_store = []
