@@ -28,7 +28,14 @@
 
 [python]
     supported = ["3.9", "3.10", "3.11"]
-    pipx = ["pip-run",  "pip-tools", "poetry",  "shiv"]
+    pipx = [
+        "pip-run",  
+        "pip-tools", 
+        "poetry",  
+        "shiv", 
+        "pre-commit",
+        "s3cmd",
+    ]
 
 [python.pyenv]
     update = "https://github.com/pyenv/pyenv-update.git"
@@ -40,6 +47,8 @@
 [packages.macos]
     taps = [
         "homebrew/cask-fonts",
+        "FelixKratz/formulae",
+        "koekeishiya/formulae",
     ]
 
     formulae = [
@@ -51,14 +60,61 @@
         "starship",
         "yq",
         "pipx",
+        "sketchybar",
+        "yabai",
+        "skhd",
+	"bitwarden-cli",
+	    "helm",
+	    "helmfile",
+
+        # GNU programs non-existing in macOS
+        "watch",
+        "wget",
+        "wdiff",
+
+        # GNU programs whose BSD counterpart is installed in macOS
+        "coreutils",
+        "binutils",
+        "diffutils",
+        "ed",
+        "findutils",
+        "gawk",
+        "gnu-indent",
+        "gnu-sed",
+        "gnu-tar",
+        "gnu-which",
+        "grep",
+        "gzip",
+        "screen",
+
+        # GNU programs existing in macOS which are outdated
+        "bash",
+        "gpatch",
+        "less",
+        "m4",
+        "make",
+        "nano",
+
+        # Other common/preferred programs in GNU/Linux distributions
+        "libressl",
+        "file-formula",
+        "git",
+        "openssh",
+        "rsync",
+        "unzip",
+        "vim",
     ]
 
     casks = [
         "kitty",
         "font-jetbrains-mono-nerd-font",
+        "font-hack-nerd-font",
         "vlc",
         "activitywatch",
         "hiddenbar",
+        "flameshot",
+	"raycast",
+	"docker",
     ]
 
     app_store = []

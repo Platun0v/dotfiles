@@ -12,9 +12,33 @@ if not set -q fish_path_hash; or test $fish_path_hash != {{ $hash }}
     # homebrew
     fish_add_path -m $HOMEBREW_PREFIX/{bin,sbin}
     # homebrew overrides
-    # fish_add_path -m $HOMEBREW_PREFIX/opt/curl/bin
+    fish_add_path -m $HOMEBREW_PREFIX/opt/curl/bin
     # fish_add_path -m $HOMEBREW_PREFIX/opt/sqlite/bin
     # fish_add_path -m $HOMEBREW_PREFIX/python/libexec
+    # coureutils
+    fish_add_path -m $HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin
+    fish_add_path -m $HOMEBREW_PREFIX/opt/coreutils/libexec/gnuman
+    # make
+    fish_add_path -m $HOMEBREW_PREFIX/opt/make/libexec/gnubin
+    fish_add_path -m $HOMEBREW_PREFIX/opt/make/libexec/gnuman
+    # m4
+    fish_add_path -m $HOMEBREW_PREFIX/opt/m4/bin
+    # unzip
+    fish_add_path -m $HOMEBREW_PREFIX/opt/unzip/bin
+    # ed
+    fish_add_path -m $HOMEBREW_PREFIX/opt/ed/libexec/gnubin
+    # findutils 
+    fish_add_path -m $HOMEBREW_PREFIX/opt/findutils/libexec/gnubin
+    # gnu-indent
+    fish_add_path -m $HOMEBREW_PREFIX/opt/gnu-indent/libexec/gnubin
+    # gnu-sed
+    fish_add_path -m $HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin
+    # gnu-tar
+    fish_add_path -m $HOMEBREW_PREFIX/opt/gnu-tar/libexec/gnubin
+    # gnu-which
+    fish_add_path -m $HOMEBREW_PREFIX/opt/gnu-which/libexec/gnubin
+    # grep
+    fish_add_path -m $HOMEBREW_PREFIX/opt/grep/libexec/gnubin
     # # ccache (macos)
     # fish_add_path -m $HOMEBREW_PREFIX/opt/ccache/libexec
   else

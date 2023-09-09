@@ -8,7 +8,7 @@ format = """
 right_format = """
 ($username )
 $directory\
-( [git:]({{ .nord.nord10 }})\
+( [git:](blue)\
 $git_branch\
 $git_commit\
 $git_state\
@@ -27,13 +27,13 @@ add_newline = false
 
 command_timeout = 2500
 
+palette = "catppuccin_mocha"
+
 [hostname]
 format = "[$hostname]($style)"
-style = {{ quote .nord.nord15 }}
 
 [jobs]
 format = "[$number$symbol]($style)"
-style = {{ quote .nord.nord12 }}
 symbol_threshold = 1
 number_threshold = 1
 symbol = "!"
@@ -41,24 +41,19 @@ symbol = "!"
 [shlvl]
 disabled = false
 format = "[$shlvl$symbol]($style)"
-style = {{ quote .nord.nord8 }}
 symbol = '\$'
 threshold = 3
 
 [character]
 format = "$symbol"
-success_symbol = "[➜]({{ .nord.nord10 }})"
-error_symbol = "[➜]({{ .nord.nord11 }})"
+success_symbol = "[➜](bold green)"
+error_symbol = "[➜](bold red)"
 
 [username]
 format = "[user:$user]($style)"
-style_root = {{ quote .nord.nord11 }}
-style_user = {{ quote .nord.nord4 }}
 
 [directory]
 format = "[$path]($style)[$read_only]($read_only_style)"
-style = {{ quote .nord.nord9 }}
-read_only_style = {{ quote .nord.nord11 }}
 read_only = "!"
 home_symbol = "~"
 truncation_length = 3
@@ -68,29 +63,25 @@ use_logical_path = true
 
 [git_branch]
 format = "[$branch( ⟳ $remote_name/$remote_branch)]($style)"
-style = {{ quote .nord.nord7 }}
 only_attached = true
 
 [git_commit]
 format = "[$hash]($style)"
-style = {{ quote .nord.nord15 }}
 
 [git_state]
 format = " \\[[$state( $progress_current/$progress_total)]($style)\\]"
-style = {{ quote .nord.nord12 }}
 
 [git_status]
 format = """( \\([\
 $ahead_behind\
-[$staged]({{ .nord.nord8 }})\
-[$modified]({{ .nord.nord7 }})\
-[$renamed]({{ .nord.nord9 }})\
-[$deleted]({{ .nord.nord12 }})\
-[$conflicted]({{ .nord.nord11 }})\
-[$untracked]({{ .nord.nord10 }})\
-[$stashed]({{ .nord.nord15 }})\
+[$staged](sky)\
+[$modified](teal)\
+[$renamed](sapphire)\
+[$deleted](peach)\
+[$conflicted](red)\
+[$untracked](blue)\
+[$stashed](mauve)\
 ]($style)\\))"""
-style = {{ quote .nord.nord4 }}
 ahead = "${count}↑"
 behind = "${count}↓"
 conflicted = "${count}&"
@@ -104,48 +95,39 @@ untracked = "${count}?"
 
 [package]
 format = "[$symbol:$context]($style)"
-style = {{ quote .nord.nord15 }}
 symbol = "pkg"
 version_format = "${raw}"
 
 [docker_context]
 format = "[$symbol:$context]($style)"
-style = {{ quote .nord.nord8 }}
 
 [dotnet]
 format = "[$symbol:$version]($style)"
-style = {{ quote .nord.nord10 }}
 symbol = ".net"
 version_format = "${raw}"
 heuristic = true
 
 [golang]
 format = "[$symbol:$version]($style)"
-style = {{ quote .nord.nord8 }}
 symbol = "go"
 version_format = "${raw}"
 
 [nodejs]
 format = "[$symbol:$version]($style)"
-style = {{ quote .nord.nord14 }}
-not_capable_style = {{ quote .nord.nord11 }}
 symbol = "node"
 version_format = "${raw}"
 
 [python]
 format = "[${symbol}${pyenv_prefix}(${version} )(\\($virtualenv\\) )]($style)"
-style = {{ quote .nord.nord13 }}
 python_binary = "python3"
 
 [ruby]
 format = "[$symbol:$version]($style)"
-style = {{ quote .nord.nord11 }}
 symbol = "rb"
 version_format = "${raw}"
 
 [rust]
 format = "[$symbol:$version]($style)"
-style = {{ quote .nord.nord12 }}
 symbol = "rs"
 version_format = "${raw}"
 
@@ -154,18 +136,42 @@ disabled = false
 pipestatus = true
 format = "[$common_meaning$signal_name$maybe_int]($style)"
 pipestatus_format = "\\[$pipestatus\\] => [$common_meaning$signal_name$maybe_int]($style)"
-style = {{ quote .nord.nord11 }}
 
 [cmd_duration]
 format = "[$duration]($style)"
-style = {{ quote .nord.nord3 }}
 show_notifications = true
 min_time_to_notify = 300_000
 
 [[battery.display]]
 threshold = 10
-style = {{ quote .nord.nord11 }}
 
 [[battery.display]]
 threshold = 25
-style = {{ quote .nord.nord12 }}
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
