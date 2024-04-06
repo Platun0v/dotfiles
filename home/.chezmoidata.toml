@@ -27,7 +27,7 @@
 
 
 [python]
-    supported = ["3.9", "3.10", "3.11"]
+    supported = ["3.9", "3.10", "3.11", "3.12"]
     pipx = [
         "pip-run",  
         "pip-tools", 
@@ -35,6 +35,12 @@
         "shiv", 
         "pre-commit",
         "s3cmd",
+        "ansible",
+        "ansible-lint",
+        "molecule",
+        "yamllint",
+        "black",
+        "ruff",
     ]
 
 [python.pyenv]
@@ -45,36 +51,34 @@
     wanted = ["gign"]
 
 [packages.macos]
-    taps = [
+    taps = [        
+        "felixkratz/formulae",
+        "go-task/tap",
+        "homebrew/bundle",
+        "homebrew/cask",
         "homebrew/cask-fonts",
-        "FelixKratz/formulae",
+        "homebrew/command-not-found",
+        "homebrew/core",
+        "homebrew/services",
         "koekeishiya/formulae",
+        "kreuzwerker/taps",
+        "spicetify/tap",
     ]
 
     formulae = [
-        # User Programs
-        "chezmoi",
-        "curl",
-        "fish",
-        "git",
-        "starship",
-        "yq",
-        "pipx",
+        # MacOS Window Manager
         "sketchybar",
-        "yabai",
         "skhd",
-	"bitwarden-cli",
-	    "helm",
-	    "helmfile",
+        "yabai",
 
         # GNU programs non-existing in macOS
         "watch",
-        "wget",
         "wdiff",
+        "wget",
 
         # GNU programs whose BSD counterpart is installed in macOS
-        "coreutils",
         "binutils",
+        "coreutils",
         "diffutils",
         "ed",
         "findutils",
@@ -96,25 +100,88 @@
         "nano",
 
         # Other common/preferred programs in GNU/Linux distributions
-        "libressl",
         "file-formula",
         "git",
+        "libressl",
         "openssh",
         "rsync",
         "unzip",
         "vim",
+
+        # General programs
+        "bat",  # cat with wings
+        "chezmoi",
+        "cloc",
+        "curl",
+        "fish",
+        "go-jsonnet", 
+        "graphviz",
+        "htop",
+        "iperf3",
+        "jq",
+        "libpq",  # PostgreSQL
+        "m1-terraform-provider-helper",  # Helper for building Terraform providers on M1
+        "mas",  # Mac App Store CLI
+        "neofetch",
+        "nmap",
+        "openapi-generator",  # Generate API clients and server stubs from OpenAPI specifications 
+        "pipx",
+        "privoxy",  # Web proxy with advanced filtering capabilities
+        "protobuf",
+        "spicetify-cli",
+        "starship",
+        "telnet",
+        "tmux",
+        "tree",
+        "wireguard-tools",
+        "yarn",  # JavaScript package manager
+        "yq",
+
+	"mongosh",
+
+        # CLI programs
+        "bitwarden-cli",
+        "consul",
+        "gh",
+        "httpie",
+        "teleport",
+        "terraform",
+        "vault",
+
+        # Containerization
+        "dive",
+        "helm",
+        "helmfile",
+        "minikube",
+        "k9s",
+        "kubectx",
+        "kubernetes-cli",
+        "kustomize",
     ]
 
     casks = [
-        "kitty",
-        "font-jetbrains-mono-nerd-font",
-        "font-hack-nerd-font",
-        "vlc",
-        "activitywatch",
-        "hiddenbar",
+        "alt-tab",
+        "android-platform-tools",
+        "bitwarden",
+        "db-browser-for-sqlite",
+        "dbeaver-community",
+        "docker",
         "flameshot",
-	"raycast",
-	"docker",
+        "font-hack-nerd-font",
+        "font-jetbrains-mono-nerd-font",
+        "hiddenbar",
+        "kitty",
+        "obsidian",
+        "postman",
+        "raycast",
+        "spotify",
+        "syncthing",
+        "visual-studio-code",
+        "vlc",
+        "wireshark",
+
+	"mongodb-compass",
+	"vmware-horizon-client",
     ]
 
     app_store = []

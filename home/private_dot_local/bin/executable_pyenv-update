@@ -28,6 +28,15 @@ for release in (chezmoi data | yq '.python.supported[]')
   end
 end
 
+chmod u+w $PYENV_ROOT/version
+# set latest python versions as global in the way `pyenv global 3.x.x 3.y.y`
+set latest
+for release in (chezmoi data | yq '.python.supported[]')
+  set -a latest (pyenv latest --known $release)
+end
+pyenv global $latest
+
+
 set installed (pipx list --json | yq '.venvs[].metadata.main_package | [.package, .suffix] | join("")')
 
 set wanted $(chezmoi data | yq '.python.pipx[]')
