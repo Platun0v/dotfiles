@@ -2,3 +2,6 @@ jorgebucaran/fisher
 jorgebucaran/autopair.fish
 catppuccin/fish
 danhper/fish-ssh-agent
+acomagu/fish-async-prompt
+jorgebucaran/replay.fish
+edc/bass
