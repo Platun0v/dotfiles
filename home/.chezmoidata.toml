@@ -48,7 +48,7 @@
     doctor = "https://github.com/pyenv/pyenv-doctor.git"
 
 [rust]
-    wanted = ["gign"]
+    wanted = ["gign", "otadump"]
 
 [packages.macos]
     taps = [        
@@ -70,6 +70,10 @@
         "sketchybar",
         "skhd",
         "yabai",
+        "skhd",
+	    "bitwarden-cli",
+	    "helm",
+	    "helmfile",
 
         # GNU programs non-existing in macOS
         "watch",
@@ -180,8 +184,8 @@
         "vlc",
         "wireshark",
 
-	"mongodb-compass",
-	"vmware-horizon-client",
+	    "mongodb-compass",
+	    "vmware-horizon-client",
     ]
 
     app_store = []
@@ -205,6 +209,7 @@
         "zip",
         "go-yq",
         "python-pipx",
+		"android-tools",
 
         "kitty",
         "vlc",
@@ -215,4 +220,14 @@
         "thunar-volman",
         "gvfs",
         "gvfs-mtp",
+
+        "hyprland",
+        "xdg-desktop-portal-hyprland",
+        "polkit-kde-agent",
+        "playerctl",
+        "swayidle",
+		"swaylock-effects",
+		"sway-audio-idle-inhibit",
+
+		"xz-static",  # otadump dep
     ]
