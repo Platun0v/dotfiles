@@ -2,11 +2,16 @@
 	defaultBranch = master
 [core]
 	editor = vim
+	autocrlf = input
 [user]
 	email = {{ .email | quote }}
 	name = {{ .name | title }}
 [url "ssh://git@git.platun0v.ru"]
 	insteadOf = "https://git.platun0v.ru"
+[url "ssh://git@gitlab.tcsbank.ru:7999/"]
+	insteadOf = https://gitlab.tcsbank.ru/
+[url "ssh://git@vm-gitlab01.tcsbank.ru:/"]
+	insteadOf = https://vm-gitlab01.tcsbank.ru/
 [pull]
 	ff = true
 	rebase = true
@@ -22,3 +27,5 @@
 	branch = true
 	showStash = true
 	submoduleSummary = true
+[alias]
+	count-lines = "! git log --author=\"$1\" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\\n\", add, subs, loc }' #"

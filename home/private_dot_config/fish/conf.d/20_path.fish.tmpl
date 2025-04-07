@@ -43,6 +43,8 @@ if not set -q fish_path_hash; or test $fish_path_hash != {{ $hash }}
     # fish_add_path -m $HOMEBREW_PREFIX/opt/ccache/libexec
     # psql
     fish_add_path -m $HOMEBREW_PREFIX/opt/libpq/bin
+    # llvm
+    fish_add_path -m $HOMEBREW_PREFIX/opt/llvm/bin
   else
     # # ccache (linux)
     # fish_add_path -m /usr/lib/ccache/bin

@@ -63,6 +63,7 @@
         "koekeishiya/formulae",
         "kreuzwerker/taps",
         "spicetify/tap",
+        "vectordotdev/brew",
     ]
 
     formulae = [
@@ -117,6 +118,7 @@
         "chezmoi",
         "cloc",
         "curl",
+        "direnv",
         "fish",
         "go-jsonnet", 
         "graphviz",
@@ -140,6 +142,7 @@
         "wireguard-tools",
         "yarn",  # JavaScript package manager
         "yq",
+        "vector",
 
 	"mongosh",
 
