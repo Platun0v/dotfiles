@@ -1,0 +1,27 @@
+#!/bin/sh -e
+
+# Import formatting library
+source "{{ .chezmoi.sourceDir }}/utils-unix/formatting.sh"
+
+packages=(
+{{- range $pkg := .python.uvx }}
+    "{{ $pkg }}"
+{{- end }}
+)
+
+print_info "Installing ${#packages[@]} applications via uvx..."
+
+# Install each application with progress tracking
+for i in "${!packages[@]}"; do
+    pkg="${packages[$i]}"
+    print_progress $((i+1)) ${#packages[@]} "Installing: $pkg"
+
+    # Use uv tool install (equivalent to uvx install)
+    uv tool install "$pkg" --quiet --force
+
+    if [ $? -ne 0 ]; then
+        print_warning "Failed to install $pkg via uvx"
+    else
+        print_success "Successfully installed $pkg via uvx"
+    fi
+done

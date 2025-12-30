@@ -34,6 +34,7 @@ end
 set installed (cargo install --list | string match -r '^\S+')
 
 set wanted $(chezmoi data | yq '.rust.wanted[]')
+set wanted_git $(chezmoi data | yq '.rust.wanted-git[]')
 
 for crate in $wanted
   if contains -- $crate $installed
@@ -48,6 +49,23 @@ if test (count $wanted) -gt 0
   set_color normal
 
   cargo install --locked --force -- $wanted
+end
+
+for git_repo in $wanted_git
+  # Извлечение имени крейта из пути GitHub
+  set crate_name (string split / $git_repo | tail -n 1)
+  
+  if contains -- $crate_name $installed
+    set_color yellow
+    echo "Updating git crate: $crate_name from $git_repo"
+    set_color normal
+    cargo install --force --git "https://github.com/$git_repo"
+  else
+    set_color red
+    echo "Installing git crate: $crate_name from $git_repo"
+    set_color normal
+    cargo install --git "https://github.com/$git_repo"
+  end
 end
 
 if test (count $installed) -gt 0

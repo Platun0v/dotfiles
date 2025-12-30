@@ -1,0 +1,16 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env fish
+
+# Disable metadata caching completely
+sudo mdutil -i off -a
+
+# config hashes
+{{ range (glob (joinPath .chezmoi.sourceDir "private_dot_config/macos-defaults/*")) -}}
+# {{ include . | sha256sum }}
+{{ end }}
+
+macos-defaults apply -v {{ joinPath .chezmoi.sourceDir "private_dot_config/macos-defaults" }}
+
+echo "you should probably reboot to apply all the changes"
+
+{{- end }}
