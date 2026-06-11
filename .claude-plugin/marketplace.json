@@ -1,0 +1,27 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "platun0v-tools",
+  "owner": { "name": "platun0v" },
+  "metadata": {
+    "description": "Personal Claude Code enforcement hooks + MCP stack",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "enforcement",
+      "description": "Enforcement hooks (data-tools jq/yq reminder)",
+      "version": "0.1.0",
+      "author": { "name": "platun0v" },
+      "source": "./plugins/enforcement",
+      "category": "development"
+    },
+    {
+      "name": "mcp-stack",
+      "description": "MCP servers: probe, serena, codegraph",
+      "version": "0.1.0",
+      "author": { "name": "platun0v" },
+      "source": "./plugins/mcp-stack",
+      "category": "development"
+    }
+  ]
+}

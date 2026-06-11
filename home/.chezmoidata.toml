@@ -27,7 +27,7 @@
 
 
 [python]
-    supported = ["3.9", "3.10", "3.11", "3.12"]
+    supported = ["3.11", "3.12", "3.13", "3.14"]
     uvx = [
         "pip-run",  
         "pip-tools", 
@@ -41,6 +41,7 @@
         "yamllint",
         "black",
         "ruff",
+        "serena-agent",
     ]
 
 [rust]
@@ -110,6 +111,8 @@
         "vim",
 
         # General programs
+        "age",
+        "node",
         "bat",  # cat with wings
         "chezmoi",
         "cloc",
@@ -195,6 +198,9 @@
         "base-devel",
 
         # User Programs
+        "age",
+        "nodejs",
+        "npm",
         "chezmoi",
         "fish",
         "git",
@@ -228,3 +234,6 @@
 
 		"xz-static",  # otadump dep
     ]
+
+[node]
+    npm = ["@colbymchenry/codegraph"]

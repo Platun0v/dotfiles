@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "probe": {
+      "command": "npx",
+      "args": ["-y", "@probelabs/probe@latest", "agent", "--mcp"]
+    },
+    "serena": {
+      "command": "serena",
+      "args": ["start-mcp-server", "--context=claude-code", "--project-from-cwd"]
+    },
+    "codegraph": {
+      "command": "codegraph",
+      "args": ["serve", "--mcp"]
+    }
+  }
+}

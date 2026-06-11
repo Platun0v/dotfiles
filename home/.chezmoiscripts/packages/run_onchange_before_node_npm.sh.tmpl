@@ -1,0 +1,25 @@
+{{- if .node.npm -}}
+#!/bin/sh -e
+
+# Import formatting library
+source "{{ .chezmoi.sourceDir }}/utils-unix/formatting.sh"
+
+packages=(
+{{- range $pkg := .node.npm }}
+    "{{ $pkg }}"
+{{- end }}
+)
+
+print_info "Installing ${#packages[@]} global npm packages..."
+
+for i in "${!packages[@]}"; do
+    pkg="${packages[$i]}"
+    print_progress $((i+1)) ${#packages[@]} "Installing: $pkg"
+    npm install -g "$pkg" --silent
+    if [ $? -ne 0 ]; then
+        print_warning "Failed to install $pkg via npm"
+    else
+        print_success "Successfully installed $pkg via npm"
+    fi
+done
+{{- end -}}

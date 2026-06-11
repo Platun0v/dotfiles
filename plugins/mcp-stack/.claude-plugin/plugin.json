@@ -1,0 +1,6 @@
+{
+  "name": "mcp-stack",
+  "version": "0.1.0",
+  "description": "MCP servers: probe, serena, codegraph",
+  "author": { "name": "platun0v" }
+}

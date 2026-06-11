@@ -20,6 +20,12 @@
 {{-   end -}}
 {{- end -}}
 
+encryption = "age"
+
+[age]
+    identity = {{ (joinPath .chezmoi.homeDir ".config/chezmoi/key.txt") | quote }}
+    recipient = "age1lrrgngkw5q2c4z6ag3vgs2xaxkp2shfx6d4sxjkqnzfry6fsmp6s5lr3ya"
+
 [data]
     configured = true
 
