@@ -58,11 +58,9 @@ if not set -q fish_path_hash; or test $fish_path_hash != {{ $hash }}
 
   # golang
   fish_add_path -m {$GOPATH,$GOROOT}/bin
-  # python
-  fish_add_path -m $PYENV_ROOT/{shims,bin}
   # rust
   fish_add_path -m $CARGO_HOME/bin
-  # dotfiles/local
+  # dotfiles/local (also where `uv tool` installs Python CLIs)
   fish_add_path -m $HOME/.local/bin $XDG_BIN_HOME
 
   # cleanup
