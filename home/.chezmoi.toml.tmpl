@@ -7,16 +7,21 @@
 {{/* Some machine dependant vars */}}
 {{- $email  := "me@platun0v.ru" -}}{{/* Users mail, used in gitconfig */}}
 {{- $name := "platun0v" -}}{{/* Name of user, used in gitconfig */}}
+{{- $work := false -}}{{/* work machine: gates corporate (encrypted) git config */}}
 
 {{- if hasKey . "configured" -}}
 {{-   $email  = .email -}}
 {{-   $name = .name -}}
+{{-   if hasKey . "work" -}}{{- $work = .work -}}{{- end -}}
 {{- else -}}
 {{-   if and (not $email) stdinIsATTY -}}
 {{-     $email := promptStringOnce . "email" "What is your email address" }}
 {{-   end -}}
 {{-   if and (not $name) stdinIsATTY -}}
 {{-     $name := promptStringOnce . "name" "What is your name address" }}
+{{-   end -}}
+{{-   if stdinIsATTY -}}
+{{-     $work = promptBoolOnce . "work" "Is this a work machine (enables corporate git config)" -}}
 {{-   end -}}
 {{- end -}}
 
@@ -32,3 +37,4 @@ encryption = "age"
     osid       = {{ quote $osid }}
     email      = {{ quote $email }}
     name       = {{ quote $name }}
+    work       = {{ $work }}

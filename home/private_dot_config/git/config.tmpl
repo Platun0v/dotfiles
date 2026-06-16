@@ -8,10 +8,9 @@
 	name = {{ .name | title }}
 [url "ssh://git@git.platun0v.ru"]
 	insteadOf = "https://git.platun0v.ru"
-[url "ssh://git@gitlab.redacted.internal:7999/"]
-	insteadOf = https://gitlab.redacted.internal/
-[url "ssh://git@vm-gitlab01.redacted.internal:/"]
-	insteadOf = https://vm-gitlab01.redacted.internal/
+{{ if get . "work" -}}
+{{ (joinPath .chezmoi.sourceDir ".secrets/git_work_urls.age") | include | decrypt | trim }}
+{{ end -}}
 [pull]
 	ff = true
 	rebase = true
