@@ -1,1 +1,6 @@
 .secrets
+
+# Internal helper library sourced by run_onchange_* scripts via
+# {{ .chezmoi.sourceDir }}/utils-unix/formatting.sh — not a dotfile to deploy.
+utils-unix
+utils-unix/**

@@ -66,10 +66,10 @@ print_banner() {
     local message_length=${#message}
     local padding=$(( (width - message_length - 4) / 2 ))
 
-    echo -e "${border_color}${BOX_TOP_LEFT}$(printf '%*s' $((width-2)) '' | tr ' ' "${BOX_HORIZONTAL}")${BOX_TOP_RIGHT}${NC}"
+    printf '%b\n' "${border_color}${BOX_TOP_LEFT}$(printf '%*s' $((width-2)) '' | tr ' ' "${BOX_HORIZONTAL}")${BOX_TOP_RIGHT}${NC}"
     printf "${border_color}${BOX_SIDE}${NC} %*s${color}%s${NC}%*s ${border_color}${BOX_SIDE}${NC}\n" \
         $padding "" "$message" $padding ""
-    echo -e "${border_color}${BOX_BOTTOM_LEFT}$(printf '%*s' $((width-2)) '' | tr ' ' "${BOX_HORIZONTAL}")${BOX_BOTTOM_RIGHT}${NC}"
+    printf '%b\n' "${border_color}${BOX_BOTTOM_LEFT}$(printf '%*s' $((width-2)) '' | tr ' ' "${BOX_HORIZONTAL}")${BOX_BOTTOM_RIGHT}${NC}"
 }
 
 print_section() {
@@ -80,7 +80,7 @@ print_section() {
     if [ -n "$icon" ]; then
         title="$icon $title"
     fi
-    echo -e "${color}${BOLD}${BOX_HORIZONTAL}${BOX_HORIZONTAL}${BOX_HORIZONTAL} $title ${BOX_HORIZONTAL}${BOX_HORIZONTAL}${BOX_HORIZONTAL}${NC}"
+    printf '%b\n' "${color}${BOLD}${BOX_HORIZONTAL}${BOX_HORIZONTAL}${BOX_HORIZONTAL} $title ${BOX_HORIZONTAL}${BOX_HORIZONTAL}${BOX_HORIZONTAL}${NC}"
     echo
 }
 
@@ -89,7 +89,7 @@ print_step() {
     local description="$2"
     local color="${3:-$WHITE}"
     CURRENT_STEP=$step
-    echo -e "${color}${BOLD}${ICON_ARROW} Step $step:${NC} $description"
+    printf '%b\n' "${color}${BOLD}${ICON_ARROW} Step $step:${NC} $description"
 }
 
 print_action() {
@@ -97,37 +97,37 @@ print_action() {
     local item="$2"
     local icon="${3:-$ICON_INSTALL}"
     local color="${4:-$YELLOW}"
-    echo -e "  ${color}${icon} ${action}:${NC} ${GRAY}${item}${NC}"
+    printf '%b\n' "  ${color}${icon} ${action}:${NC} ${GRAY}${item}${NC}"
 }
 
 print_success() {
     local message="$1"
-    echo -e "${GREEN}${ICON_SUCCESS} ${message}${NC}"
+    printf '%b\n' "${GREEN}${ICON_SUCCESS} ${message}${NC}"
     return 0
 }
 
 print_error() {
     local message="$1"
-    echo -e "${RED}${ICON_ERROR} ${message}${NC}" >&2
+    printf '%b\n' "${RED}${ICON_ERROR} ${message}${NC}" >&2
     FAILED_STEPS=$((FAILED_STEPS + 1))
     return 0
 }
 
 print_warning() {
     local message="$1"
-    echo -e "${YELLOW}${ICON_WARNING} ${message}${NC}"
+    printf '%b\n' "${YELLOW}${ICON_WARNING} ${message}${NC}"
     return 0
 }
 
 print_info() {
     local message="$1"
-    echo -e "${CYAN}${ICON_INFO} ${message}${NC}"
+    printf '%b\n' "${CYAN}${ICON_INFO} ${message}${NC}"
     return 0
 }
 
 print_skipped() {
     local message="$1"
-    echo -e "${YELLOW}${ICON_WARNING} ${message}${NC}"
+    printf '%b\n' "${YELLOW}${ICON_WARNING} ${message}${NC}"
     SKIPPED_STEPS=$((SKIPPED_STEPS + 1))
     return 0
 }
@@ -189,7 +189,7 @@ print_header() {
     local icon="${3:-$ICON_PACKAGE}"
     echo
     print_banner "$script_name" "$icon"
-    echo -e "${GRAY}${description}${NC}"
+    printf '%b\n' "${GRAY}${description}${NC}"
     echo
 }
 
@@ -263,7 +263,7 @@ handle_error() {
 # Print ASCII art welcome message
 print_ascii_art() {
     local color="${1:-$CYAN}"
-    echo -e "${color}"
+    printf '%b\n' "${color}"
     cat << 'EOF'
     ███╗   ███╗██╗  ██╗     ██████╗  ██████╗ ████████╗███████╗██╗██╗     ███████╗███████╗
     ████╗ ████║██║ ██╔╝    ██╔═══██╗██╔═══██╗╚══██╔══╝██╔════╝██║██║     ██╔════╝██╔════╝
@@ -273,7 +273,7 @@ print_ascii_art() {
     ╚═╝     ╚═╝╚═╝  ╚═╝     ╚═════╝  ╚═════╝    ╚═╝   ╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝
                                      MK-DOTFILES
 EOF
-    echo -e "${NC}"
+    printf '%b\n' "${NC}"
 }
 
 # Print welcome message with system info

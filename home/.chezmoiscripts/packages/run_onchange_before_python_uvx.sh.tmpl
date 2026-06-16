@@ -1,27 +1,47 @@
-#!/bin/sh -e
+{{- if or .python.uvx .python.uvx_with -}}
+#!/bin/sh
 
 # Import formatting library
 source "{{ .chezmoi.sourceDir }}/utils-unix/formatting.sh"
 
-packages=(
-{{- range $pkg := .python.uvx }}
-    "{{ $pkg }}"
-{{- end }}
-)
+# Pin the interpreter so tools don't land on a too-new Python that lacks wheels.
+# uv downloads a managed CPython for this version if the system doesn't have it.
+python_version="3.13"
 
-print_info "Installing ${#packages[@]} applications via uvx..."
+total={{ add (len .python.uvx) (len .python.uvx_with) }}
+count=0
+failed=0
 
-# Install each application with progress tracking
-for i in "${!packages[@]}"; do
-    pkg="${packages[$i]}"
-    print_progress $((i+1)) ${#packages[@]} "Installing: $pkg"
-
-    # Use uv tool install (equivalent to uvx install)
-    uv tool install "$pkg" --quiet --force
-
-    if [ $? -ne 0 ]; then
-        print_warning "Failed to install $pkg via uvx"
+# install_tool <display-name> <uv tool install args...>
+install_tool() {
+    name="$1"
+    shift
+    count=$((count + 1))
+    print_progress "$count" "$total" "Installing: $name"
+    # NOTE: intentionally no `set -e` — we keep installing the rest even if one
+    # fails. Capture combined output so a clean run stays quiet, but on failure
+    # print uv's actual error (which --quiet would otherwise hide).
+    if output=$(uv tool install "$@" --python "$python_version" --force 2>&1); then
+        print_success "Successfully installed $name via uvx"
     else
-        print_success "Successfully installed $pkg via uvx"
+        print_warning "Failed to install $name via uvx"
+        printf '%s\n' "$output" | sed 's/^/    /'
+        failed=$((failed + 1))
     fi
-done
+}
+
+print_info "Installing $total applications via uvx (Python $python_version)..."
+
+# Simple tools: one isolated environment each.
+{{ range $pkg := .python.uvx -}}
+install_tool "{{ $pkg }}" "{{ $pkg }}"
+{{ end -}}
+# Tools needing extra packages in the same environment (uv tool install --with).
+{{ range $t := .python.uvx_with -}}
+install_tool "{{ $t.package }}" "{{ $t.package }}"{{ range $w := $t.with }} --with "{{ $w }}"{{ end }}
+{{ end -}}
+
+if [ "$failed" -gt 0 ]; then
+    print_warning "$failed package(s) failed to install"
+fi
+{{- end -}}

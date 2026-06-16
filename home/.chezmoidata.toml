@@ -28,21 +28,31 @@
 
 [python]
     supported = ["3.11", "3.12", "3.13", "3.14"]
+    # Simple tools: each gets its own isolated environment
+    # (uv tool install <pkg>).
     uvx = [
-        "pip-run",  
-        "pip-tools", 
+        "pip-run",
+        "pip-tools",
         "poetry",
-        "shiv", 
+        "shiv",
         "pre-commit",
         "s3cmd",
-        "ansible",
-        "ansible-lint",
-        "molecule",
         "yamllint",
         "black",
         "ruff",
         "serena-agent",
+        "ansible",
     ]
+    # Tools that need extra packages co-installed in the SAME environment,
+    # e.g. ansible-lint/molecule must import the full ansible install and its
+    # collections to work correctly. Rendered as:
+    #   uv tool install <package> --with <each of `with`>
+    [[python.uvx_with]]
+        package = "ansible-lint"
+        with = ["ansible"]
+    [[python.uvx_with]]
+        package = "molecule"
+        with = ["ansible", "molecule-plugins"]
 
 [rust]
     wanted = ["cargo-update", "gign", "otadump"]
