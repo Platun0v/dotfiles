@@ -145,6 +145,7 @@
         "telnet",
         "tmux",
         "tree",
+        "uv",  # Python toolchain (uv tool / uvx) — required by the uvx install script
         "wireguard-tools",
         "yarn",  # JavaScript package manager
         "yq",
@@ -214,6 +215,7 @@
         "net-tools",
         "qmk",
         "starship",
+        "uv",  # Python toolchain (uv tool / uvx) — required by the uvx install script
         "tailscale",
         "unzip",
         "zip",

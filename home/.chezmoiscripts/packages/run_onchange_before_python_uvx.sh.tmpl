@@ -4,6 +4,11 @@
 # Import formatting library
 source "{{ .chezmoi.sourceDir }}/utils-unix/formatting.sh"
 
+# Fail loudly if uv is missing instead of emitting one cryptic error per tool.
+# uv is provisioned by the package step (brew/pacman) that runs before this one;
+# exiting non-zero here makes chezmoi re-run this script on the next apply.
+command -v uv >/dev/null 2>&1 || { print_error "uv not found in PATH — install uv (brew install uv / pacman -S uv), then re-apply"; exit 1; }
+
 # Pin the interpreter so tools don't land on a too-new Python that lacks wheels.
 # uv downloads a managed CPython for this version if the system doesn't have it.
 python_version="3.13"
