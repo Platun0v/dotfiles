@@ -28,6 +28,11 @@
 
 [python]
     supported = ["3.11", "3.12", "3.13", "3.14"]
+    # Version exposed as the unversioned `python`/`python3` shims in ~/.local/bin
+    # (uv python install --default). Independent of the uvx tool pin below: tools
+    # stay on a conservative version for wheel availability, while the interactive
+    # interpreter tracks a newer stable. Pinned so every host resolves the same.
+    default = "3.14"
     # Simple tools: each gets its own isolated environment
     # (uv tool install <pkg>).
     uvx = [

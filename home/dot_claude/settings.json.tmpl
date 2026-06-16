@@ -2,7 +2,8 @@
   "env": {
     "ANTHROPIC_BASE_URL": "{{ (joinPath .chezmoi.sourceDir ".secrets/base_url.age") | include | decrypt | trim }}",
     "DISABLE_TELEMETRY": "1",
-    "DISABLE_ERROR_REPORTING": "1"
+    "DISABLE_ERROR_REPORTING": "1",
+    "UV_SYSTEM_CERTS": "true"
   },
   "skipWebFetchPreflight": true,
   "includeCoAuthoredBy": false,

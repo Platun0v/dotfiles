@@ -36,6 +36,11 @@ if not set -q fish_prefs_hash; or test $fish_prefs_hash != {{ $hash }}
   # python
   def -x PYTHONSTARTUP $XDG_CONFIG_HOME/python/startup.py
 
+  # uv — use the platform native cert store (macOS keychain → corporate CA) for uv's
+  # own network ops (interpreter downloads, uv pip install/sync). Does NOT change the
+  # resulting interpreter's runtime ssl (still certifi) — that needs truststore/SSL_CERT_FILE.
+  def -x UV_SYSTEM_CERTS true
+
   # ruby
 #   def -x RBENV_ROOT $XDG_DATA_HOME/rbenv
 #   def -x IRBRC $XDG_CONFIG_HOME/irb/irbrc

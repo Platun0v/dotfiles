@@ -1,0 +1,29 @@
+{{- if .python.default -}}
+#!/bin/sh
+
+# Import formatting library
+source "{{ .chezmoi.sourceDir }}/utils-unix/formatting.sh"
+
+# Fail loudly if uv is missing instead of emitting a cryptic error. uv is
+# provisioned by the package step (brew/pacman) that runs before this one;
+# exiting non-zero makes chezmoi re-run this script on the next apply.
+command -v uv >/dev/null 2>&1 || { print_error "uv not found in PATH — install uv (brew install uv / pacman -S uv), then re-apply"; exit 1; }
+
+# Install a managed default CPython and expose the unversioned `python` and
+# `python3` shims in ~/.local/bin (first on PATH). This makes bare `python`
+# resolve to uv's interpreter on every host, independent of any system /
+# python.org / pyenv leftovers — no per-host manual step. Idempotent.
+python_version="{{ .python.default }}"
+
+print_info "Ensuring default uv Python $python_version (python/python3 shims)..."
+
+# --preview-features python-install-default silences the experimental warning on --default.
+if output=$(uv python install "$python_version" --default --preview-features python-install-default 2>&1); then
+    print_success "Default uv Python $python_version ready"
+    printf '%s\n' "$output" | sed 's/^/    /'
+else
+    print_error "Failed to install default uv Python $python_version"
+    printf '%s\n' "$output" | sed 's/^/    /'
+    exit 1
+fi
+{{- end -}}
