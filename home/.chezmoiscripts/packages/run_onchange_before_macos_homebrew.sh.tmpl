@@ -1,6 +1,16 @@
 {{- if eq .chezmoi.os "darwin" -}}
 #!/bin/sh -e
 
+# Trust third-party taps before bundling. Homebrew refuses to load formulae from
+# untrusted taps; official homebrew/* taps are exempt. Tap first so the tap exists
+# locally, then mark it trusted. Idempotent and safe to re-run.
+{{ range .packages.macos.taps | sortAlpha | uniq -}}
+{{- if not (hasPrefix "homebrew/" (lower .)) }}
+brew tap {{ quote . }} >/dev/null 2>&1 || true
+brew trust {{ quote . }} || true
+{{- end }}
+{{- end }}
+
 echo "Installing packages from Brewfile..."
 brew bundle --file=/dev/stdin <<EOF
 {{ includeTemplate "private_dot_config/brew/Brewfile.tmpl" . }}

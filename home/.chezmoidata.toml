@@ -61,16 +61,15 @@
     ]
 
 [packages.macos]
-    taps = [        
-        "felixkratz/formulae",
+    taps = [
         "go-task/tap",
         "homebrew/command-not-found",
         "koekeishiya/formulae",
-        "kreuzwerker/taps",
         "spicetify/tap",
         "vectordotdev/brew",
 	    "hashicorp/tap",
 	    "FelixKratz/formulae",
+        "nikitabobko/tap"  # Aerospace
     ]
 
     formulae = [
@@ -79,7 +78,6 @@
         "skhd",
         "borders",
         "skhd",
-	    "bitwarden-cli",
 	    "helm",
 	    "helmfile",
 
@@ -135,7 +133,6 @@
         "iperf3",
         "jq",
         "libpq",  # PostgreSQL
-        "m1-terraform-provider-helper",  # Helper for building Terraform providers on M1
         "mas",  # Mac App Store CLI
         "neofetch",
         "nmap",
@@ -175,7 +172,6 @@
     casks = [
         "alt-tab",
         "android-platform-tools",
-        "bitwarden",
         "db-browser-for-sqlite",
         "dbeaver-community",
         "docker-desktop",
@@ -193,7 +189,7 @@
         "vlc",
 #        "wireshark",
     #	"consul",
-        "nikitabobko/tap/aerospace",
+        "aerospace",
         "mos",
         "mongodb-compass",
     #	"vmware-horizon-client",
