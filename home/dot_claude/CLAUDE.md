@@ -15,6 +15,29 @@
   skill or checklist. Editing the working copy is fine; finalizing it is not.
   In jj: no `jj commit`/`describe` for finalization, no bookmarks/pushes, without a
   request. Applies globally until explicitly revoked.
+- **Exception — subagent-driven development.** When running the subagent-driven-development
+  workflow (per-task implement→review cycles), subagents MAY create intermediate commits as
+  review checkpoints without a per-commit ask — treat them as ephemeral scaffolding, one per
+  task. Once the feature is done, squash the whole stack into a SINGLE commit so the history
+  keeps no trace of the per-task commits (the repo looks as if those intermediate commits never
+  existed). This exception covers only commit + squash inside the workflow; pushing / merging /
+  finalizing the squashed result still needs an explicit request. (jj: per-task `jj commit`,
+  then `jj squash` the stack into one; git: per-task commits, then `git rebase -i`/`reset --soft`
+  to one.)
+
+## Code search tooling
+- For symbol/structure lookups — where a symbol is defined, callers/callees, a file's
+  outline, "what/where is X", or surveying an area — prefer the codegraph MCP
+  (`codegraph_explore`/`_search`/`_node`/`_callers`/`_callees`) and Serena's symbolic
+  tools over plain `grep`/`find`. They query a pre-built index, so one call returns the
+  verbatim source — far cheaper than grep+read loops.
+- Serena's symbolic navigation is backed by the JetBrains IDE here (the `jet_brains_*`
+  tools): it needs the project open and indexed in the IDE. codegraph is a standalone
+  index that does NOT need the IDE — prefer it when the IDE may not be running, and fall
+  back to Serena's IDE tools for live refactors/inspections that need the language server.
+- Reserve `grep`/`find` for genuine text scans where no symbol exists: comment markers
+  (e.g. `// --- fork: ---`), string literals, config/log text — or when codegraph and
+  Serena are both unavailable.
 
 # Memory policy — which store, when
 
