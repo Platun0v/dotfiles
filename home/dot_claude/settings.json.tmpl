@@ -8,6 +8,10 @@
   "skipWebFetchPreflight": true,
   "includeCoAuthoredBy": false,
   "permissions": {
+    "allow": [
+      "WebSearch",
+      "mcp__plugin_mcp-stack_codegraph"
+    ],
     "deny": [
       "Read(**/.env)",
       "Read(**/.env.*)",
@@ -30,7 +34,7 @@
         ]
       },
       {
-        "matcher": "mcp__serena__*",
+        "matcher": "mcp__plugin_mcp-stack_serena__*",
         "hooks": [
           { "type": "command", "command": "serena-hooks auto-approve --client=claude-code" }
         ]
@@ -60,23 +64,18 @@
   },
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
     "jj-workflow@jj-workflow": true,
-    "claude-mem@thedotmack": true,
-    "file-search@netresearch-claude-code-marketplace": true,
     "data-tools@netresearch-claude-code-marketplace": true,
     "enforcement@platun0v-tools": true,
     "mcp-stack@platun0v-tools": true
   },
   "extraKnownMarketplaces": {
     "jj-workflow": { "source": { "source": "github", "repo": "kalupa/jj-workflow" } },
-    "thedotmack": { "source": { "source": "github", "repo": "thedotmack/claude-mem" } },
     "netresearch-claude-code-marketplace": { "source": { "source": "github", "repo": "netresearch/claude-code-marketplace" } },
     "platun0v-tools": { "source": { "source": "github", "repo": "platun0v/dotfiles" } }
   }

@@ -47,8 +47,6 @@
   cross-project facts under the `global/` prefix. Each project keeps a `core` memory as
   its index and links related/used memories (incl. `global/…`) with `mem:` references.
   Conventions: see Serena memory `global/memory_maintenance`.
-- **Passive history of past work** → claude-mem (automatic). Treat injected observations
-  as hints, not truth — verify a referenced file/symbol still exists before relying on it.
 - Do **not** use Claude Code native auto-memory (`MEMORY.md`) — superseded by Serena.
 
 When you learn something worth keeping: a behavioral rule → CLAUDE.md; any other

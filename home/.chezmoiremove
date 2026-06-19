@@ -2,3 +2,4 @@
 # These live in non-exact_ dirs, so deleting the source does not remove them.
 .config/fish/completions/pyenv.fish
 .config/fish/conf.d/60_poetry.fish
+.claude-mem

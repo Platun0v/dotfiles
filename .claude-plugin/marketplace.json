@@ -17,7 +17,7 @@
     },
     {
       "name": "mcp-stack",
-      "description": "MCP servers: probe, serena, codegraph",
+      "description": "MCP servers: serena, codegraph, context7",
       "version": "0.1.0",
       "author": { "name": "platun0v" },
       "source": "./plugins/mcp-stack",

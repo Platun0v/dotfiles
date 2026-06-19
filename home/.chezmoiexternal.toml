@@ -1,0 +1,8 @@
+[".claude/skills/humanizer"]
+    type = "git-repo"
+    url = "https://github.com/blader/humanizer.git"
+    refreshPeriod = "168h"
+    [".claude/skills/humanizer".clone]
+        args = ["--depth", "1", "--branch", "main"]
+    [".claude/skills/humanizer".pull]
+        args = ["--ff-only"]
