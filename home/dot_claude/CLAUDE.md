@@ -52,3 +52,20 @@
 When you learn something worth keeping: a behavioral rule → CLAUDE.md; any other
 fact/knowledge → a Serena memory (global/ if cross-project, else project). One fact,
 one home — update instead of duplicating; never store rules in Serena.
+
+# Serena workflow
+
+Session lifecycle in Serena projects: **`serena-bootstrap`** at the start (activates the
+project, loads saved state + relevant memories, reports where work left off) → work →
+**`finalize-session`** at the end (distills durable facts, then overwrites the session
+snapshot). Start is nudged automatically by the enforcement `SessionStart` hook; the end
+is an explicit call — there is no reliable auto-trigger, so finalize before you stop.
+
+Two memory planes — keep them separate:
+- **Durable** → Serena memories (`core` + focused, project or `global/`). Strict filter.
+- **Transient working state** → `.serena/memories/_session/current.md` only. It is hidden
+  from `list_memories` (`ignored_memory_patterns`) and written/read with harness file
+  tools, never `read_memory`/`write_memory`. Forward-looking ("how to continue"), not a
+  history log. Narrative/history is dropped — there is no claude-mem.
+
+Context here is `claude-code`; modes cannot be switched at runtime (set at startup).

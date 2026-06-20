@@ -9,8 +9,8 @@
   "plugins": [
     {
       "name": "enforcement",
-      "description": "Enforcement hooks (data-tools jq/yq reminder)",
-      "version": "0.1.0",
+      "description": "Enforcement hooks (data-tools reminder + Serena session-start)",
+      "version": "0.1.1",
       "author": { "name": "platun0v" },
       "source": "./plugins/enforcement",
       "category": "development"

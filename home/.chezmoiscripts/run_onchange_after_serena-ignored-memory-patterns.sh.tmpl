@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# run_onchange (after packages): ensure Serena hides episodic/transient memories
+# from list_memories by extending ignored_memory_patterns. Guarded + idempotent.
+# Serena owns this file at runtime (appends machine-specific `projects:`), so we
+# poke a single key with yq instead of managing the whole file via chezmoi.
+set -euo pipefail
+
+cfg="$HOME/.serena/serena_config.yml"
+
+# Guard: if Serena hasn't created its config yet, do nothing (it will later).
+[ -f "$cfg" ] || { echo "serena_config.yml absent — skipping ignored_memory_patterns"; exit 0; }
+
+yq -i '.ignored_memory_patterns = ((.ignored_memory_patterns // []) + ["_session/.*","_archive/.*","_episodes/.*"] | unique)' "$cfg"
+echo "ensured ignored_memory_patterns in $cfg"

@@ -1,9 +1,9 @@
 ---
-name: distilling-context-to-memory
-description: Use when wrapping up a work session or reaching a milestone, or when the user asks to save / remember / checkpoint / persist what was decided or learned — reviews the conversation and writes the durable parts into Serena memory. Triggers include "save this to memory", "запомни", "сохрани в память", "checkpoint", end-of-session summary, "what's worth keeping from this session".
+name: finalize-session
+description: Use when wrapping up a work session, reaching a milestone, or when the user asks to finalize / save / remember / checkpoint / persist the session — runs two tracks — (1) distills durable facts into Serena memory, and (2) overwrites the transient session-state snapshot so the next session resumes cleanly. Triggers include "finalize session", "финализируй сессию", "сохрани состояние", "save this to memory", "запомни", "сохрани в память", "checkpoint", "заканчиваем", end-of-session summary, "what's worth keeping from this session".
 ---
 
-# Distilling Context to Memory
+# Finalize Session
 
 ## Overview
 
@@ -63,8 +63,8 @@ nothing and say so. Do not manufacture a memory to feel productive.
 | Candidate is… | Goes to | Not Serena? |
 |---|---|---|
 | A behavioral **rule** ("always X", "never Y") | **CLAUDE.md** (global or repo) | ✅ skip |
-| Passive "what we did" history / play-by-play | **claude-mem** (automatic) | ✅ skip |
-| A **one-off / tactical / "for now" decision** (obsolete once the change merges) | claude-mem / nowhere | ✅ skip |
+| Passive "what we did" history / play-by-play | **drop** (nowhere — not stored) | ✅ skip |
+| A **one-off / tactical / "for now" decision** (obsolete once the change merges) | **drop** (nowhere) | ✅ skip |
 | Trivially re-derivable from code, git, or `--help` | nowhere | ✅ skip |
 | Transient session chatter, scratch reasoning | nowhere | ✅ skip |
 | A reusable **fact / knowledge**, project-specific | Serena **project** memory | save |
@@ -110,13 +110,51 @@ Tell the user concisely: which memories you **created**, **updated**, or **delet
 (by name), and what you deliberately **skipped** and why (e.g. "rule → belongs in
 CLAUDE.md", "re-derivable from code"). The skips are how the user catches a
 mis-route.
+Also state that the session-state snapshot was written (Track 2): one line naming the
+recorded **Next step**, so the user can sanity-check the resume target.
+
+## Step 6 — Snapshot session state (Track 2, ALWAYS)
+
+Independently of whether any durable memory was saved, overwrite the transient
+session-state file so the next session resumes cleanly. This is **not** a Serena
+memory — it is ignored by `list_memories` (pattern `_session/.*`) and is written
+with the **harness `Write` tool** (Serena memory tools cannot touch ignored memories).
+
+Overwrite `.serena/memories/_session/current.md` with this exact structure — keep it
+forward-looking ("how to continue"), not a history log:
+
+```markdown
+# Session state — <project>
+updated: <YYYY-MM-DD>
+
+## Goal
+<what the work is about, 1–2 lines>
+
+## In progress
+- <current unfinished focus>
+
+## Next step
+- <the single most important concrete next action>
+
+## Open questions
+- <unresolved decisions, if any>
+
+## Touched
+- <files / areas touched this session — pointers, not diffs>
+```
+
+Rules:
+- **Always** write it on finalize, even when Track 1 saved zero durable memories.
+- **Overwrite**, never append — it is a single current snapshot, not a journal.
+- Drop narrative/history; only forward-looking state belongs here.
+- If `<project>` has no `.serena/memories/` yet, create the `_session/` directory first.
 
 ## Common mistakes
 
 | Mistake | Fix |
 |---|---|
 | Saving a behavioral rule into Serena | Rules live only in CLAUDE.md. Skip it here. |
-| Hand-writing "what we did" history | That's claude-mem's job (automatic). Skip it. |
+| Hand-writing "what we did" history | History is not stored. Forward-looking state goes to the session snapshot (Track 2); narrative is dropped. |
 | Creating a 2nd memory for an existing topic | `edit_memory` the existing one. One fact, one home. |
 | Dumping the whole session summary as one memory | Split by topic; save only survivors of Step 2. |
 | Saving a temporary / "for now" decision | Obsolete once merged — fails "survives the code". Skip; at most a one-liner in `core` next-step. |
@@ -128,7 +166,7 @@ mis-route.
 ## Red flags — stop and re-route
 
 - "I'll save this rule to memory so I remember it" → CLAUDE.md, not Serena.
-- "Let me write down everything we did today" → that's claude-mem; save only durable facts.
+- "Let me write down everything we did today" → history is not stored; save only durable facts.
 - "I spent hours on this, it must be worth saving" → effort ≠ durability. Re-run the four-part test.
 - "It's an architectural / big decision" — but it's marked *temporary* / *for now* → tactical, fails "survives the code". Skip.
 - "I can't name the future question this answers" → then it's clutter. Skip.
