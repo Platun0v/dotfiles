@@ -39,10 +39,22 @@
   (e.g. `// --- fork: ---`), string literals, config/log text — or when codegraph and
   Serena are both unavailable.
 
+## Testing
+- Don't assert human-facing message text (error messages, user-facing copy) in tests —
+  it's expected to change and that's fine. Assert the stable, machine-readable part instead:
+  HTTP status, the API error `code`, structured / `detail` fields. If a message must be
+  checked at all, match only its most stable fragment, never the full string. Exception:
+  unit tests of the rendering/formatting layer itself may assert exact strings — there the
+  text IS the contract under test.
+
 # Memory policy — which store, when
 
 - **Rules** (always-apply behavioral constraints) → this file (global) or a repo-level
   `CLAUDE.md` (project rules). Full text, always loaded. Rules live ONLY in CLAUDE.md.
+- Do **not** create skill-prescribed knowledge artifacts in the repo (`CONTEXT.md`,
+  `CONTEXT-MAP.md`, `docs/adr/` from domain-modeling and similar skills) — capture
+  glossary/decision content in Serena memories instead. Design docs that the project
+  explicitly houses (e.g. `rfc/`, `.claude/specs/`) are unaffected.
 - **All facts & knowledge** → Serena memories. Project knowledge in `.serena/memories/`;
   cross-project facts under the `global/` prefix. Each project keeps a `core` memory as
   its index and links related/used memories (incl. `global/…`) with `mem:` references.

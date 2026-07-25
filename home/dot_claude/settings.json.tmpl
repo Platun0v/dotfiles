@@ -8,6 +8,7 @@
   "skipWebFetchPreflight": true,
   "includeCoAuthoredBy": false,
   "permissions": {
+    "defaultMode": "auto",
     "allow": [
       "WebSearch",
       "mcp__plugin_mcp-stack_codegraph"
@@ -23,8 +24,10 @@
       "/private/tmp"
     ]
   },
-  "model": "claude-opus-4-8[1m]",
-  "effortLevel": "high",
+  "model": "claude-opus-5[1m]",
+  "effortLevel": "xhigh",
+  "skipWorkflowUsageWarning": true,
+  "skipAutoPermissionPrompt": true,
   "hooks": {
     "PreToolUse": [
       {
@@ -72,11 +75,13 @@
     "jj-workflow@jj-workflow": true,
     "data-tools@netresearch-claude-code-marketplace": true,
     "enforcement@platun0v-tools": true,
-    "mcp-stack@platun0v-tools": true
+    "mcp-stack@platun0v-tools": true,
+    "mattpocock-skills@mattpocock": true
   },
   "extraKnownMarketplaces": {
     "jj-workflow": { "source": { "source": "github", "repo": "kalupa/jj-workflow" } },
     "netresearch-claude-code-marketplace": { "source": { "source": "github", "repo": "netresearch/claude-code-marketplace" } },
-    "platun0v-tools": { "source": { "source": "github", "repo": "platun0v/dotfiles" } }
+    "platun0v-tools": { "source": { "source": "github", "repo": "platun0v/dotfiles" } },
+    "mattpocock": { "source": { "source": "github", "repo": "mattpocock/skills" } }
   }
 }
