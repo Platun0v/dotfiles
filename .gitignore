@@ -1,1 +1,4 @@
 docs/
+
+# Serena project state (machine-local: config, cache, memories)
+/.serena/
