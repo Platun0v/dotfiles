@@ -31,6 +31,16 @@ encryption = "age"
     identity = {{ (joinPath .chezmoi.homeDir ".config/chezmoi/key.txt") | quote }}
     recipient = "age1lrrgngkw5q2c4z6ag3vgs2xaxkp2shfx6d4sxjkqnzfry6fsmp6s5lr3ya"
 
+{{ if stat (joinPath .chezmoi.workingTree ".jj") -}}
+# Source dir is a colocated jj repo: jj keeps git HEAD permanently detached, so
+# chezmoi's default `git pull --autostash --rebase` dies with "You are not
+# currently on a branch". Fetch and rebase the working-copy branch with jj
+# instead (no autostash needed — the working copy is itself a commit).
+[update]
+    command = "sh"
+    args = ["-c", "jj git fetch && jj rebase -o master@origin"]
+
+{{ end -}}
 [data]
     configured = true
 
