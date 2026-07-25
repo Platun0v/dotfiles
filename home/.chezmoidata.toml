@@ -220,6 +220,7 @@
         "net-tools",
         "qmk",
         "starship",
+        "syncthing",  # syncs ~/.serena/memories between hosts
         "uv",  # Python toolchain (uv tool / uvx) — required by the uvx install script
         "tailscale",
         "unzip",
