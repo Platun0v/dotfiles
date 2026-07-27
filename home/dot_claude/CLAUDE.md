@@ -79,7 +79,9 @@ which a hook greps at the moment of failure. A card that works around someone el
 carries `observed_against` / `stale_when`: a stale workaround is worse than a missing one,
 because it gets retrieved and believed.
 
-Split a card that outgrows ~200 lines; never trim it. Delete only when a card is both
+Split a card that outgrows ~200 lines, or that starts answering two different questions;
+never trim it. Measure in **lines** — byte size misleads on a Cyrillic corpus, where UTF-8
+doubles every letter and a 200-line card weighs 16 KB. Delete only when a card is both
 unread and duplicated by another — a rarely-read unique card is doing exactly its job.
 Project cards live in no git and no backup, so deletion there is final.
 

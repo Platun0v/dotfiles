@@ -43,6 +43,21 @@ do not dump every memory.
 
    A card whose `recheck_after` has passed is a **hypothesis, not an instruction**:
    confirm the named check before acting on it, then bump `verified`.
+
+   Cards with no `description` line are invisible to this selection. When
+
+   ```
+   rg --files-without-match '^description:' .serena/memories -g '*.md'
+   ```
+
+   returns anything, this project has not been migrated to the current card format — say so
+   in the **Report** step and point at `mem:global/card-format-migration`, which is the
+   procedure. As of 2026-07-27 that is every project: global is migrated, all 84 project
+   cards are not. Migration is deliberately lazy — it happens when you next work in a
+   project, not in a sweep.
+
+   (`rg -L` is `--follow`, not "files without a match". Using it here silently reports
+   nonsense.)
 6. **Report** — one short paragraph: project, where work left off, and the **`next:`
    line quoted verbatim** so a resume target that names nothing runnable is visible
    immediately. Add anything blocked on a human, and any sync-conflicts from the
