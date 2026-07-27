@@ -1,6 +1,6 @@
 {
   "name": "enforcement",
-  "version": "0.1.1",
-  "description": "Enforcement hooks (data-tools reminder + Serena session-start)",
+  "version": "0.2.0",
+  "description": "Enforcement hooks (data-tools reminder + Serena session-start + memory symptom lookup on tool failure)",
   "author": { "name": "platun0v" }
 }
