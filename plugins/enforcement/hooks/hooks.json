@@ -8,6 +8,11 @@
           {
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/data-tools-reminder.sh"
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/codegraph-for-symbols.sh",
+            "timeout": 5
           }
         ]
       }
@@ -15,6 +20,18 @@
     "PostToolUseFailure": [
       {
         "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/memory-symptom-lookup.sh",
+            "timeout": 5,
+            "statusMessage": "Проверяю, описана ли эта ошибка"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
         "hooks": [
           {
             "type": "command",

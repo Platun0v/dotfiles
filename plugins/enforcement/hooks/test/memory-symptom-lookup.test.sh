@@ -74,4 +74,16 @@ out="$(run '{"hook_event_name":"PostToolUseFailure","tool_response":"integer exp
 printf '%s' "$out" | jq -r '.hookSpecificOutput.additionalContext' | grep -q 'mem:global/bash-tool-runs-zsh' \
   || fail "G: global prefix lost when cwd is absent"
 
+# H: UserPromptSubmit — a pasted error surfaces the card, and the event name is echoed back
+out="$(run '{"hook_event_name":"UserPromptSubmit","prompt":"падает с (eval):1: no matches found: *.md, почему?"}')"
+printf '%s' "$out" | jq -r '.hookSpecificOutput.hookEventName' | grep -qx 'UserPromptSubmit' \
+  || fail "H: wrong hookEventName echoed"
+printf '%s' "$out" | jq -r '.hookSpecificOutput.additionalContext' | grep -q 'mem:global/bash-tool-runs-zsh' \
+  || fail "H: card not surfaced from a pasted error"
+
+# I: an ordinary prompt with no error text stays silent — a false positive costs more than
+# silence, since one irrelevant card measurably degrades the answer.
+[ -z "$(run '{"hook_event_name":"UserPromptSubmit","prompt":"давай отрефакторим модуль оплаты"}')" ] \
+  || fail "I: ordinary prompt produced noise"
+
 echo "PASS"

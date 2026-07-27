@@ -27,8 +27,15 @@ command -v jq >/dev/null 2>&1 || exit 0
 err="$(printf '%s' "$input" | jq -r '
   [ (.tool_response // empty | tostring),
     (.tool_input.command // empty),
-    (.error // empty | tostring) ] | join("\n")' 2>/dev/null || true)"
+    (.error // empty | tostring),
+    (.prompt // empty) ] | join("\n")' 2>/dev/null || true)"
 [ -n "${err//[[:space:]]/}" ] || exit 0
+
+# Same matcher, two events. On UserPromptSubmit the text is whatever was pasted into the
+# prompt — someone bringing an error along is exactly the moment a known-error card earns
+# its place. Matching stays on `symptoms:` alone, never on descriptions: a false positive
+# here costs more than silence, since one irrelevant card measurably degrades an answer.
+event="$(printf '%s' "$input" | jq -r '.hook_event_name // "PostToolUseFailure"' 2>/dev/null || echo PostToolUseFailure)"
 
 cwd="$(printf '%s' "$input" | jq -r '.cwd // ""' 2>/dev/null || true)"
 
@@ -77,9 +84,9 @@ done < <(symptom_index)
 [ "$count" -gt 0 ] || exit 0
 
 msg="[memory] Эта ошибка уже описана. Прочитай карточку прежде чем диагностировать заново:"$'\n'"${hits}"
-jq -n --arg m "$msg" '{
+jq -n --arg m "$msg" --arg e "$event" '{
   hookSpecificOutput: {
-    hookEventName: "PostToolUseFailure",
+    hookEventName: $e,
     additionalContext: $m
   }
 }'
