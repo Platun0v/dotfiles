@@ -31,10 +31,11 @@
   (`codegraph_explore`/`_search`/`_node`/`_callers`/`_callees`) and Serena's symbolic
   tools over plain `grep`/`find`. They query a pre-built index, so one call returns the
   verbatim source — far cheaper than grep+read loops.
-- Serena's symbolic navigation is backed by the JetBrains IDE here (the `jet_brains_*`
-  tools): it needs the project open and indexed in the IDE. codegraph is a standalone
-  index that does NOT need the IDE — prefer it when the IDE may not be running, and fall
-  back to Serena's IDE tools for live refactors/inspections that need the language server.
+- Serena's symbolic tools run on LSP (`language_backend: LSP` globally, unset in every
+  project). Where a project sets `languages: []` — a config repo with no codebase — the
+  whole Serena editing layer is inert, including the file-based `replace_content`; edit
+  with the harness tools there and reach for codegraph, which needs no language server.
+  Details: `mem:global/serena-tool-gotchas`.
 - Reserve `grep`/`find` for genuine text scans where no symbol exists: comment markers
   (e.g. `// --- fork: ---`), string literals, config/log text — or when codegraph and
   Serena are both unavailable.
@@ -59,25 +60,51 @@
   cross-project facts under the `global/` prefix. Each project keeps a `core` memory as
   its index and links related/used memories (incl. `global/…`) with `mem:` references.
   Conventions: see Serena memory `global/memory_maintenance`.
+- A **procedure repeated across projects** → a skill in `~/.claude/skills/`, not a memory
+  card. Its `description` sits in the system prompt permanently, which is what makes it
+  fire; a card must be remembered to be read. The gate before writing one — success, then
+  dedup, then abstraction — is in the `finalize-session` skill.
+- A rule that **must** fire → a **hook**, not a line here. Adherence decays within a
+  session regardless of what this file says; a hook that intercepts the tool call does not.
 - Do **not** use Claude Code native auto-memory (`MEMORY.md`) — superseded by Serena.
 
-When you learn something worth keeping: a behavioral rule → CLAUDE.md; any other
-fact/knowledge → a Serena memory (global/ if cross-project, else project). One fact,
-one home — update instead of duplicating; never store rules in Serena.
+When you learn something worth keeping: a behavioral rule → CLAUDE.md; a repeated
+procedure → a skill; any other fact/knowledge → a Serena memory (global/ if cross-project,
+else project). One fact, one home — update instead of duplicating; never store rules in Serena.
+
+Every card carries frontmatter. `description` is written as **the condition under which it
+bites**, never as a topic — it is the only thing that decides whether the card is opened
+again. A card a failure should surface also carries `symptoms:` with verbatim error strings,
+which a hook greps at the moment of failure. A card that works around someone else's bug
+carries `observed_against` / `stale_when`: a stale workaround is worse than a missing one,
+because it gets retrieved and believed.
+
+Split a card that outgrows ~200 lines; never trim it. Delete only when a card is both
+unread and duplicated by another — a rarely-read unique card is doing exactly its job.
+Project cards live in no git and no backup, so deletion there is final.
 
 # Serena workflow
 
 Session lifecycle in Serena projects: **`serena-bootstrap`** at the start (activates the
 project, loads saved state + relevant memories, reports where work left off) → work →
-**`finalize-session`** at the end (distills durable facts, then overwrites the session
-snapshot). Start is nudged automatically by the enforcement `SessionStart` hook; the end
-is an explicit call — there is no reliable auto-trigger, so finalize before you stop.
+**`finalize-session`** at the end (distills durable facts, writes the session state, and asks
+once whether a procedure repeated across projects has earned a skill). Start is nudged
+automatically by the enforcement `SessionStart` hook; the end is an explicit call — there is
+no reliable auto-trigger, so finalize before you stop.
 
 Two memory planes — keep them separate:
 - **Durable** → Serena memories (`core` + focused, project or `global/`). Strict filter.
-- **Transient working state** → `.serena/memories/_session/current.md` only. It is hidden
-  from `list_memories` (`ignored_memory_patterns`) and written/read with harness file
-  tools, never `read_memory`/`write_memory`. Forward-looking ("how to continue"), not a
-  history log. Narrative/history is dropped — there is no claude-mem.
+- **Transient working state** → `.serena/memories/_session/`, split by how often it is
+  rewritten: `current.md` is overwritten whole every time, `progress.md` is appended to and
+  deleted when the feature ships. Both are hidden from `list_memories`
+  (`ignored_memory_patterns`) and written/read with harness file tools, never
+  `read_memory`/`write_memory`. Forward-looking ("how to continue"), not a history log —
+  narrative is dropped, there is no claude-mem.
+
+`current.md` carries one `next:` line: the next **physical action**, naming a command or a
+`file:line` that exists on disk. Rewrite it after every completed step, not at the end — a
+crash, an auto-compaction and walking away all give zero warning, and those are exactly the
+interruptions that most need a resume cue. A line that names nothing runnable is worth the
+same as no line.
 
 Context here is `claude-code`; modes cannot be switched at runtime (set at startup).
