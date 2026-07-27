@@ -27,13 +27,26 @@ do not dump every memory.
    remove the leftover file with `rm`, not `delete_memory`.
 3. **Index** — `read_memory("core")` and `list_memories()` to see the durable set.
 4. **Resume state** — `Read` `.serena/memories/_session/current.md` (the hook may have
-   already injected it; read it directly if not). This is the forward-looking snapshot:
-   Goal / In progress / Next step / Open questions / Touched.
-5. **Selective load** — `read_memory()` ONLY the durable memories that `core` links and
-   that are relevant to the current Next step. Do not read the whole set.
-6. **Report** — one short paragraph: project, where work left off, and the recorded
-   **Next step**, plus any sync-conflicts found in the **Sync-conflicts** step. Ask the
-   user to confirm continuing from there (or to redirect).
+   already injected it; read it directly if not), and `_session/progress.md` when it
+   exists. `current.md` carries the Active task and its `next:` line; `progress.md`
+   carries the outstanding items and the options already rejected — read it before
+   proposing anything, or you will re-propose what was dismissed.
+5. **Selective load** — read the one-line `description` of every card in one shot, then
+   open only what the `next:` line actually needs:
+
+   ```
+   rg -N '^description:' ~/.serena/memories/global -g '*.md' .serena/memories -g '*.md'
+   ```
+
+   Selecting by filename is guessing; selecting by description is reading. Two or three
+   cards is the normal outcome — the whole set is not.
+
+   A card whose `recheck_after` has passed is a **hypothesis, not an instruction**:
+   confirm the named check before acting on it, then bump `verified`.
+6. **Report** — one short paragraph: project, where work left off, and the **`next:`
+   line quoted verbatim** so a resume target that names nothing runnable is visible
+   immediately. Add anything blocked on a human, and any sync-conflicts from the
+   **Sync-conflicts** step. Ask the user to confirm continuing from there.
 
 ## Notes
 - The session-state file is **not** a Serena memory (hidden by `ignored_memory_patterns`);

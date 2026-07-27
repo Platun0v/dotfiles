@@ -1,6 +1,6 @@
 ---
 name: finalize-session
-description: Use when wrapping up a work session, reaching a milestone, or when the user asks to finalize / save / remember / checkpoint / persist the session — runs two tracks — (1) distills durable facts into Serena memory, and (2) overwrites the transient session-state snapshot so the next session resumes cleanly. Triggers include "finalize session", "финализируй сессию", "сохрани состояние", "save this to memory", "запомни", "сохрани в память", "checkpoint", "заканчиваем", end-of-session summary, "what's worth keeping from this session".
+description: Use when wrapping up a work session, reaching a milestone, or when the user asks to finalize / save / remember / checkpoint / persist the session — runs three tracks — (1) distills durable facts into Serena memory, (2) writes the session state so the next session resumes from a concrete next action, and (3) turns a procedure repeated across projects into a skill. Triggers include "finalize session", "финализируй сессию", "сохрани состояние", "save this to memory", "запомни", "сохрани в память", "checkpoint", "заканчиваем", end-of-session summary, "what's worth keeping from this session".
 ---
 
 # Finalize Session
@@ -97,6 +97,31 @@ For each survivor, check the existing memories from Step 0:
 **Format:** dense factual agent-notes, one focused topic per memory, no filler. Link
 related memories with backticked `` `mem:NAME` `` (project or `global/`).
 
+**Every card carries frontmatter**, and `description` is the one line that decides
+whether it is ever opened again:
+
+```yaml
+---
+description: <WHEN this bites — the condition, not the topic>
+verified: <YYYY-MM-DD>
+symptoms: ["verbatim error string"]        # cards a failure should surface
+observed_against: "<tool + version>"       # cards that work around someone else's bug
+recheck_after: <YYYY-MM-DD>
+stale_when: <the observable condition that makes this wrong>
+---
+```
+
+Write `description` as the symptom the reader will actually be looking at.
+"How Serena's replace_content handles escapes" is a topic and will not be found;
+"replace_content writes a literal backslash-n into the file in regex mode" is a
+condition and will.
+
+**Size:** a card over ~200 lines gets **split**, never trimmed. There is no backup for
+project cards — splitting loses nothing, trimming is irreversible.
+
+**Removal:** delete only when a card is both unread and duplicated by another. A rarely
+read but unique card stays.
+
 ## Step 4 — Keep `core` current
 
 `core` is the project's index and entry point. After adding / removing / renaming
@@ -110,18 +135,21 @@ Tell the user concisely: which memories you **created**, **updated**, or **delet
 (by name), and what you deliberately **skipped** and why (e.g. "rule → belongs in
 CLAUDE.md", "re-derivable from code"). The skips are how the user catches a
 mis-route.
-Also state that the session-state snapshot was written (Track 2): one line naming the
-recorded **Next step**, so the user can sanity-check the resume target.
+Then quote the **`next:` line verbatim** (Track 2), so the user can catch a resume
+target that names nothing runnable. If Track 3 produced a skill, name it and say which
+three sessions it came from; if it produced nothing, say nothing about it.
 
 ## Step 6 — Snapshot session state (Track 2, ALWAYS)
 
-Independently of whether any durable memory was saved, overwrite the transient
-session-state file so the next session resumes cleanly. This is **not** a Serena
-memory — it is ignored by `list_memories` (pattern `_session/.*`) and is written
-with the **harness `Write` tool** (Serena memory tools cannot touch ignored memories).
+Independently of whether any durable memory was saved, write the transient session
+state so the next session resumes cleanly. These are **not** Serena memories — they are
+ignored by `list_memories` (pattern `_session/.*`) and written with the **harness
+`Write` tool** (Serena memory tools cannot touch ignored memories).
 
-Overwrite `.serena/memories/_session/current.md` with this exact structure — keep it
-forward-looking ("how to continue"), not a history log:
+Two files, split by how often they are rewritten. Keeping them in one file destroys the
+half that should have survived.
+
+### `_session/current.md` — overwritten whole, every time
 
 ```markdown
 # Session state — <project>
@@ -130,24 +158,77 @@ updated: <YYYY-MM-DD>
 ## Goal
 <what the work is about, 1–2 lines>
 
-## In progress
-- <current unfinished focus>
+## Active
+<the one task in hand>
 
-## Next step
-- <the single most important concrete next action>
+next: <when> — <exact command or file:line> — <the one fact that makes it non-obvious>
 
-## Open questions
-- <unresolved decisions, if any>
+## Suspended
+- <key> — <one line> — next: <its own resume line>
 
-## Touched
-- <files / areas touched this session — pointers, not diffs>
+## Waiting on a human
+- <the question, or omit this section entirely>
+
+## Touched outside VCS
+- <memory edits, scratchpad artefacts, files outside the repo, user decisions like
+  "do not revert this" — everything `jj status` and `jj log` already say is omitted>
 ```
 
-Rules:
-- **Always** write it on finalize, even when Track 1 saved zero durable memories.
-- **Overwrite**, never append — it is a single current snapshot, not a journal.
-- Drop narrative/history; only forward-looking state belongs here.
-- If `<project>` has no `.serena/memories/` yet, create the `_session/` directory first.
+### The `next:` line is the load-bearing part
+
+It is **prospective**: the next physical action, not a summary of what happened. It
+names something that exists on disk — a command you could paste, or a `file:line`.
+
+```
+next: now — run `uv run pytest tests/api/test_tokens.py -k expiry` — it fails at
+      test_tokens.py:88 comparing a tz-naive datetime to an aware one
+next: when the arch host is up — `jj edit ptuvwxyz && make lint` — nilaway is the only
+      linter that reproduces it, golangci-lint alone is green
+```
+
+Weak forms to rewrite rather than ship: `continue the token refactor` restates the goal;
+`pick this up later` names no observable trigger. A line naming nothing that exists on
+disk measures the same as no line at all.
+
+**Write it after every completed step, not only here.** A crash, an auto-compaction and
+a user walking away all give zero warning — the suspensions that most need a resume line
+are exactly the ones this step never sees.
+
+### `_session/progress.md` — appended, never overwritten
+
+Delete it when the feature ships. It carries what survives a session boundary without
+being a durable fact:
+
+```markdown
+## <feature>
+- [x] done
+- [ ] outstanding
+- rejected: <option> — <why>
+```
+
+The `rejected:` lines pay for themselves: without them a fresh agent proposes the
+option you already dismissed.
+
+### Rules
+
+- **Always** write `current.md` on finalize, even when Track 1 saved zero memories.
+- **Overwrite** `current.md`; **append** to `progress.md`.
+- If `<project>` has no `.serena/memories/` yet, create `_session/` first.
+
+## Step 7 — Procedure track (Track 3, ask once)
+
+One question, at the end:
+
+> Did I today carry out a procedure I have already carried out **in another project or
+> on another host** — and did it work?
+
+Almost always the answer is no, and this step ends here. When it is yes, a repeated
+procedure is worth an artifact, and the gate that decides is in
+[`references/procedure-gate.md`](references/procedure-gate.md).
+
+Repeated **task shapes** become skills; repeated **facts** stay memory cards. The unit
+follows the content: a routine you re-execute is a skill, an insight you re-apply is a
+card.
 
 ## Common mistakes
 
